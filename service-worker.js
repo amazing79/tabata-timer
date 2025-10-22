@@ -1,4 +1,4 @@
-const CACHE_NAME = 'tabata-cache-v2'; // <- cambiá versión al actualizar la app
+const CACHE_NAME = 'tabata-cache-v2'; // <- RECORDAR CAMBIAR VERSION PARA INDICAR ACTUALIZACIONES
 const ASSETS = [
   './',
   './index.html',

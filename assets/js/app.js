@@ -223,10 +223,11 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     // Si el SW cambia (hay versión nueva)
     const notice = document.createElement('div');
+    const version = document.getElementById('version');
     notice.innerHTML = `
       <div style="
         position: fixed;
-        bottom: 20px;
+        top: 10px;
         left: 50%;
         transform: translateX(-50%);
         background: #007bff;
@@ -237,6 +238,7 @@ if ('serviceWorker' in navigator) {
         font-size: 0.95em;
         z-index: 9999;
         display: flex;
+        flex-direction: column;
         align-items: center;
         gap: 10px;
       ">
@@ -252,7 +254,7 @@ if ('serviceWorker' in navigator) {
         ">Actualizar</button>
       </div>
     `;
-    document.body.appendChild(notice);
+    version.appendChild(notice);
 
     document.getElementById('update-btn').addEventListener('click', () => {
       window.location.reload(true);
