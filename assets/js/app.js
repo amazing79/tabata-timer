@@ -254,7 +254,8 @@ if ('serviceWorker' in navigator) {
         ">Actualizar</button>
       </div>
     `;
-    version.appendChild(notice);
+    //version.appendChild(notice);
+    document.body.appendChild(notice);
 
     document.getElementById('update-btn').addEventListener('click', () => {
       window.location.reload(true);
