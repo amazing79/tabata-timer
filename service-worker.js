@@ -1,30 +1,66 @@
-const CACHE_NAME = "tabata-timer-v1";
+const CACHE_NAME = 'tabata-cache-v2'; // <- cambiá versión al actualizar la app
 const ASSETS = [
-  "./",
-  "./index.html",
-  "./assets/css/styles.css",
-  "./assets/js/app.js",
-  "./manifest.json",
-  "./assets/icons/icon-192.png",
-  "./assets/icons/icon-512.png"
+  './',
+  './index.html',
+  './manifest.json',
+  './assets/css/styles.css',
+  './assets/js/app.js',
+  './assets/icons/icon-192.png',
+  './assets/icons/icon-512.png'
 ];
 
-self.addEventListener("install", event => {
+// Instalación: cachea archivos esenciales
+self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
   );
+  self.skipWaiting(); // fuerza activación inmediata
 });
 
-self.addEventListener("activate", event => {
+// Activación: limpia caches viejos
+self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.map(key => key !== CACHE_NAME && caches.delete(key)))
-    )
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys
+          .filter((key) => key !== CACHE_NAME)
+          .map((key) => caches.delete(key))
+      );
+    })
   );
+  self.clients.claim(); // toma control inmediato de las páginas
 });
 
-self.addEventListener("fetch", event => {
-  event.respondWith(
-    caches.match(event.request).then(cached => cached || fetch(event.request))
-  );
+// Estrategia: network first para HTML/JS, cache first para otros
+self.addEventListener('fetch', (event) => {
+  const req = event.request;
+  const url = new URL(req.url);
+
+  // Siempre buscar primero en la red para index.html y app.js
+  if (
+      url.pathname.endsWith('index.html') 
+      || url.pathname.endsWith('app.js')
+      || url.pathname.endsWith('styles.css') 
+    ) {
+    event.respondWith(networkFirst(req));
+  } else {
+    event.respondWith(cacheFirst(req));
+  }
 });
+
+async function cacheFirst(req) {
+  const cached = await caches.match(req);
+  return cached || fetch(req);
+}
+
+async function networkFirst(req) {
+  const cache = await caches.open(CACHE_NAME);
+  try {
+    const fresh = await fetch(req);
+    cache.put(req, fresh.clone());
+    return fresh;
+  } catch (e) {
+    const cached = await cache.match(req);
+    return cached || Response.error();
+  }
+}

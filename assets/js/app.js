@@ -218,3 +218,46 @@ async function releaseScreen(params) {
   }
 }
 
+// === DETECTOR DE NUEVAS VERSIONES DEL SERVICE WORKER ===
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    // Si el SW cambia (hay versión nueva)
+    const notice = document.createElement('div');
+    notice.innerHTML = `
+      <div style="
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        font-size: 0.95em;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      ">
+        🔄 Nueva versión disponible 
+        <button id="update-btn" style="
+          background: white;
+          color: #007bff;
+          border: none;
+          padding: 5px 10px;
+          border-radius: 6px;
+          cursor: pointer;
+          font-weight: 600;
+        ">Actualizar</button>
+      </div>
+    `;
+    document.body.appendChild(notice);
+
+    document.getElementById('update-btn').addEventListener('click', () => {
+      window.location.reload(true);
+    });
+  });
+}
+
+
