@@ -1,7 +1,7 @@
 body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
-  background: #f8f9fb;
+  background: #73466f;
   color: #333;
   display: flex;
   justify-content: center;
@@ -14,7 +14,6 @@ body {
   max-width: 400px;
   padding: 1rem;
 }
-
 
 
 h1, h2 {
