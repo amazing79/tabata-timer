@@ -18,6 +18,7 @@ let timer, currentPhase, timeLeft, exercise, interval, isRunning = false;
 let config = loadConfig();
 
 let wakeObj = null;
+let ctx = null;
 
 function loadConfig() {
   const defaults = {
@@ -41,8 +42,13 @@ function showScreen(screen) {
   elements.configScreen.classList.toggle("active", screen === "config");
 }
 
+function initializeAudio(){
+  if(ctx) return;
+  ctx = new (window.AudioContext || window.webkitAudioContext)();
+  console.log('audio inicializado!');
+}
+
 function beep(frequency = 800, duration = 150) {
-  const ctx = new (window.AudioContext || window.webkitAudioContext)();
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
   osc.type = "sine";
@@ -60,6 +66,7 @@ function startTimer() {
   exercise = 1;
   interval = 1;
   currentPhase = "warmup";
+  initializeAudio();
   blockScreen()
   startPhase(config.warmup > 0 ? "warmup" : "start-delay");
 }
@@ -112,6 +119,7 @@ function pauseTimer() {
 }
 
 function resetTimer() {
+    releaseScreen();
     clearInterval(timer);
     isRunning = false;
     exercise = 0;
@@ -120,7 +128,7 @@ function resetTimer() {
     elements.time.textContent = "00";
     elements.exerciseCount.textContent = "0";
     elements.intervalCount.textContent = "0";
-    //updateProgressRing(0);
+   
     updateProgressTime(0);
     elements.mainScreen.className = "card active";
 }
@@ -157,7 +165,6 @@ function setPhase(label, duration, nextPhase) {
     elements.status.textContent = label;
     timeLeft = duration;
     const totalTime = duration;
-    //updateProgressRing(0); // reinicia el anillo al inicio de cada fase
     updateProgressTime(0);
     updateDisplay();
     clearInterval(timer);
@@ -165,11 +172,10 @@ function setPhase(label, duration, nextPhase) {
     timer = setInterval(() => {
          timeLeft--;
         const percent = (totalTime - timeLeft) / totalTime;
-        //updateProgressRing(percent);
         updateProgressTime(percent);
        
         updateDisplay();
-        if (timeLeft === 3) beep(500); // preaviso
+        if (timeLeft === 3) beep(1000); // preaviso
         if (timeLeft <= 0) {
             clearInterval(timer);
             
@@ -184,6 +190,7 @@ function setPhase(label, duration, nextPhase) {
 elements.playBtn.addEventListener("click", startTimer);
 elements.pauseBtn.addEventListener("click", pauseTimer);
 elements.configBtn.addEventListener("click", () => {
+  if(isRunning)return;
   showScreen("config");
   configFields.forEach(f => document.getElementById(f).value = config[f]);
 });
@@ -198,8 +205,9 @@ elements.configForm.addEventListener("submit", e => {
 
 elements.resetBtn.addEventListener("click", resetTimer);
 
-async function blockScreen(params) {
+async function blockScreen() {
   try{
+    if(wakeObj) return;
     wakeObj = await navigator.wakeLock.request('screen');
     console.log('se activo el bloqueo de pantalla')
   } catch (error) {
@@ -207,11 +215,12 @@ async function blockScreen(params) {
   }
 }
 
-async function releaseScreen(params) {
-   try{
+async function releaseScreen() {
+  try{
     if(wakeObj){
-      wakeObj.release();
-      console.log('se desactivo el bloqueo de pantalla')
+        await wakeObj.release();
+        wakeObj = null;
+        console.log('se desbloqueo la pantalla');
     }
   } catch (error) {
     console.error('No se pudio: ' +  error);
