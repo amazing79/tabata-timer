@@ -1,0 +1,225 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  background: #f8f9fb;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.app {
+  width: 100%;
+  max-width: 400px;
+  padding: 1rem;
+}
+
+
+
+h1, h2 {
+  margin-top: 0;
+}
+
+.status {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.details {
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+}
+
+.controls button {
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin: 0 0.5rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.controls button:hover {
+  background: #0056b3;
+}
+
+.config-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+form label {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5rem 0;
+}
+
+input {
+  width: 80px;
+  padding: 0.3rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button[type="submit"], #back-btn {
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #007bff;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button[type="submit"]:hover, #back-btn:hover {
+  background: #0056b3;
+}
+
+/* Colores de fondo dinámicos por fase */
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 2rem;
+  text-align: center;
+  display: none;
+  transition: background-color 0.8s ease, color 0.8s ease;
+}
+
+.card.active {
+  display: block;
+}
+
+
+/* Estados visuales */
+.card.work {
+  background: #e8f8f0;
+  color: #0d6831;
+}
+
+.card.rest {
+  background: #e7f0ff;
+  color: #093f83;
+}
+
+.card.warmup, .card.start-delay {
+  background: #fff5e6;
+  color: #8a4b00;
+}
+
+.card.cooldown {
+  background: #ffe6e6;
+  color: #7a0000;
+}
+
+.card.done {
+  background: #f2f2f2;
+  color: #333;
+}
+
+/* Colores según fase */
+.card.work .progress { background-color: #28a745; }
+.card.rest .progress { background-color: #007bff; }
+.card.warmup .progress, .card.start-delay .progress { background-color: #ffc107; }
+.card.cooldown .progress { background-color: #dc3545; }
+.card.done .progress { background-color: #6c757d; }
+
+/** Estilos para nuevo circulo progresivo */
+.border{
+    fill: transparent;
+    stroke: #f0b2f1;
+    stroke-width: 13px;
+}
+
+.progress{
+    fill: transparent;
+    stroke: purple;
+    stroke-width: 13px;
+    stroke-dasharray: 565.5;
+    stroke-dashoffset: 565.5;
+    rotate: -90deg;
+    transform-origin: center;
+    stroke-linecap: round;
+}
+
+.innerTime{
+    font-size: 4rem;
+    font-weight: bold;
+    text-anchor: middle;
+    dominant-baseline: central;
+    fill: rgb(172, 21, 21);
+}
+
+
+
+/* === EFECTO PULSO AL CAMBIAR DE FASE === */
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 0 0 rgba(0,0,0,0); }
+  50% { transform: scale(1.05); box-shadow: 0 0 15px rgba(0,0,0,0.2); }
+  100% { transform: scale(1); box-shadow: 0 0 0 rgba(0,0,0,0); }
+}
+
+.card.pulse {
+  animation: pulse 0.8s ease;
+}
+
+/* === MODO OSCURO === */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #121212;
+    color: #e5e5e5;
+  }
+
+  .card {
+    background: #1f1f1f;
+    box-shadow: 0 1px 12px rgba(172, 171, 171, 0.87);
+  }
+
+  input {
+    background: #2a2a2a;
+    color: #fff;
+    border: 1px solid #444;
+  }
+
+  .controls button {
+    background: #2f6de0;
+  }
+
+  .controls button:hover {
+    background: #1d4fb3;
+  }
+
+  button[type="submit"], #back-btn {
+    background: #2f6de0;
+  }
+
+  button[type="submit"]:hover, #back-btn:hover {
+    background: #1d4fb3;
+  }
+
+  .inside-circle {
+    background: #1f1f1f;
+  }
+
+  /* Ajustes de colores de fase para modo oscuro */
+  .card.work { background: #143d26; color: #a8f5c1; }
+  .card.rest { background: #142a4d; color: #b0c8ff; }
+  .card.warmup, .card.start-delay { background: #4d3a00; color: #ffe9a8; }
+  .card.cooldown { background: #4d0000; color: #ffb0b0; }
+  .innerTime{
+    fill: #fafafa;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .time { font-size: 3rem; }
+  .controls button { width: 50px; height: 50px; font-size: 1.2rem; }
+}

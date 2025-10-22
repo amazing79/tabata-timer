@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabata Timer</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <meta name="theme-color" content="#007bff" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#121212" media="(prefers-color-scheme: dark)">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <meta name="theme-color" content="#007bff">
+</head>
+<body>
+  <div class="app">
+    <div id="main-screen" class="card active">
+        <h1>Tabata Timer</h1>
+        <div class="status" id="status">Preparado</div>
+
+        <div class="progress-new">
+            <svg width="200" height="200">
+                <circle r="90" cx="50%" cy="50%" class="border"></circle>
+                <circle r="90" cx="50%" cy="50%" class="progress" id="progressbar"></circle>
+                <text x="50%" y="50%" id="time" class="innerTime">00</text>
+            </svg>
+        </div>
+        <div class="details">
+            <div>Ejercicio: <span id="exercise-count">0</span></div>
+            <div>Intervalo: <span id="interval-count">0</span></div>
+        </div>
+        <div class="controls">
+            <button id="play-btn" title="Iniciar"><span>▶️</span></button>
+            <button id="pause-btn" title="Pausar"><span>⏸️</span></button>
+            <button id="reset-btn" title="Reiniciar"><span>🔄</span></button>
+            <button id="config-btn" title="Configuración"><span>⚙️</span></button>
+        </div>
+
+    </div>
+
+    <div id="config-screen" class="card">
+        <h2>Configuración</h2>
+        <form id="config-form">
+            <label>Entrada en calor (segundos): <input type="number" id="warmup" min="0"></label>
+            <label>Cuenta regresiva inicial (segundos): <input type="number" id="start-delay" min="0"></label>
+            <label>Tiempo de ejercicio (segundos): <input type="number" id="work" min="1"></label>
+            <label>Tiempo de descanso (segundos): <input type="number" id="rest" min="1"></label>
+            <label>Tiempo de enfriamiento (segundos): <input type="number" id="cooldown" min="0"></label>
+            <label>Número de ejercicios: <input type="number" id="exercises" min="1"></label>
+            <label>Número de intervalos: <input type="number" id="intervals" min="1"></label>
+
+            <div class="config-buttons">
+            <button type="submit">Guardar</button>
+            <button type="button" id="back-btn">Volver</button>
+            </div>
+        </form>
+    </div>
+  </div>
+
+    <script src="assets/js/app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+            .then(() => console.log('✅ Service Worker registrado'))
+            .catch(err => console.error('Error al registrar SW:', err));
+        }
+    </script>
+</body>
+</html>
