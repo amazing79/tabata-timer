@@ -154,6 +154,7 @@ function updateProgressTime(percent) {
 
 function setPhase(label, duration, nextPhase) {
     // limpiar clases visuales previas
+    let beepVolume = 1500;
     elements.mainScreen.className = "card active";
     elements.mainScreen.classList.add(currentPhase);
 
@@ -168,14 +169,17 @@ function setPhase(label, duration, nextPhase) {
     updateProgressTime(0);
     updateDisplay();
     clearInterval(timer);
-    beep(1000); // inicio de fase
+    beep(beepVolume); // inicio de fase
     timer = setInterval(() => {
          timeLeft--;
         const percent = (totalTime - timeLeft) / totalTime;
         updateProgressTime(percent);
        
         updateDisplay();
-        if (timeLeft === 3) beep(1000); // preaviso
+        if (timeLeft < 4 && timeLeft > 0) {
+          beep(beepVolume); // preaviso
+          beepVolume -= 200;
+        }
         if (timeLeft <= 0) {
             clearInterval(timer);
             
