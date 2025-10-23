@@ -151,7 +151,6 @@ function updateProgressTime(percent) {
 }
 
 
-
 function setPhase(label, duration, nextPhase) {
     // limpiar clases visuales previas
     let beepVolume = 1500;
@@ -236,7 +235,6 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     // Si el SW cambia (hay versión nueva)
     const notice = document.createElement('div');
-    const version = document.getElementById('version');
     notice.innerHTML = `
       <div style="
         position: fixed;
@@ -267,7 +265,6 @@ if ('serviceWorker' in navigator) {
         ">Actualizar</button>
       </div>
     `;
-    //version.appendChild(notice);
     document.body.appendChild(notice);
 
     document.getElementById('update-btn').addEventListener('click', () => {
