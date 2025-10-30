@@ -1,12 +1,13 @@
-const CACHE_NAME = 'tabata-cache-v2.3'; // <- RECORDAR CAMBIAR VERSION PARA INDICAR ACTUALIZACIONES
+const CACHE_NAME = 'tabata-cache-v3'; // <- RECORDAR CAMBIAR VERSION PARA INDICAR ACTUALIZACIONES
 const ASSETS = [
-  './',
-  './index.html',
-  './manifest.json',
-  './assets/css/styles.css',
-  './assets/js/app.js',
-  './assets/icons/icon-192.png',
-  './assets/icons/icon-512.png'
+    './',
+    './index.html',
+    './manifest.json',
+    './assets/css/styles.css',
+    './assets/js/app.js',
+    './assets/icons/icon-192.png',
+    './assets/icons/icon-512.png',
+    './assets/sounds/fondo.mp3',
 ];
 
 // Instalación: cachea archivos esenciales
@@ -36,7 +37,7 @@ self.addEventListener('fetch', (event) => {
   const req = event.request;
   const url = new URL(req.url);
 
-  // Siempre buscar primero en la red para index.html y app.js
+  // Siempre buscar primero en la red para index.html, app.js y css
   if (
       url.pathname.endsWith('index.html') 
       || url.pathname.endsWith('app.js')
