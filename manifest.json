@@ -3,6 +3,7 @@
   "short_name": "Tabata",
   "description": "Cronómetro Tabata configurable, minimalista y offline.",
   "start_url": "./index.html",
+  "display_override": ["fullscreen", "minimal-ui"],
   "display": "standalone",
   "background_color": "#f8f9fb",
   "theme_color": "#007bff",
@@ -31,6 +32,12 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "assets/images/tabata-timer-free.png",
+      "type": "image/png"
     }
   ]
 }
