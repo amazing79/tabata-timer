@@ -20,9 +20,6 @@ let config = loadConfig();
 let wakeObj = null;
 let ctx = null;
 
-const audio = new Audio('assets/sounds/fondo.mp3');
-
-
 function loadConfig() {
   const defaults = {
     warmup: 0,
@@ -72,7 +69,6 @@ function startTimer() {
   initializeAudio();
   blockScreen()
   startPhase(config.warmup > 0 ? "warmup" : "start-delay");
-  audio.play().then(r => console.info('bg music started'));
 }
 
 function startPhase(phase) {
@@ -135,8 +131,6 @@ function resetTimer() {
    
     updateProgressTime(0);
     elements.mainScreen.className = "card active";
-    audio.pause()
-    audio.currentTime = 0;
 }
 
 
@@ -147,8 +141,6 @@ function finish() {
   elements.time.textContent = "00";
   beep(1200);
   isRunning = false;
-  audio.pause()
-  audio.currentTime = 0;
 }
 
 
